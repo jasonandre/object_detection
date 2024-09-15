@@ -1,0 +1,77 @@
+#code2,  
+
+# casscade classifier를 이용한 객체감지
+import cv2
+import os
+
+# 패쓰 설정
+os.chdir('C:/Users')
+
+# 파일 읽기
+filepath = 'highway.mp4'
+output_path = 'output_tracking.mp4'
+
+# 영상 읽기
+cap = cv2.VideoCapture(filepath)
+
+# 영상이 안 열리는 경우 에러 메시지
+if not cap.isOpened():
+    print("Video is unavailable:", filepath)
+    exit(0)
+
+# 객체 감지기 (Background Subtractor) 생성
+object_detector = cv2.createBackgroundSubtractorMOG2(history=100, varThreshold=40)
+
+# 비디오 출력 설정
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # MP4 코덱 설정
+fps = int(cap.get(cv2.CAP_PROP_FPS))
+frame_size = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+out = cv2.VideoWriter(output_path, fourcc, fps, frame_size)
+
+if not out.isOpened():
+    print("Error: Could not open video writer.")
+    cap.release()
+    cv2.destroyAllWindows()
+    exit(0)
+
+while True:
+    ret, frame = cap.read()
+
+    if not ret:
+        break
+
+    # 관심 영역(ROI) 설정
+    roi = frame[60:360, 200:450]
+
+    # 객체 감지
+    mask = object_detector.apply(roi)
+
+    # 마스크에 임계값 적용
+    _, mask = cv2.threshold(mask, 254, 255, cv2.THRESH_BINARY)
+
+    # 윤곽선 찾기
+    contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+    for cnt in contours:
+        area = cv2.contourArea(cnt)
+        if area > 300:  # 너무 작은 객체는 무시
+            # 경계 박스 그리기
+            x, y, w, h = cv2.boundingRect(cnt)
+            cv2.rectangle(roi, (x, y), (x + w, y + h), (0, 0, 255), 2)
+
+    # 결과 출력
+    cv2.imshow("Frame", frame)
+    cv2.imshow("Mask", mask)
+    cv2.imshow("ROI", roi)
+
+    # 비디오에 현재 프레임 추가
+    out.write(frame)
+
+    # 중간에 나가는 키 설정 (ESC)
+    if cv2.waitKey(30) == 27:
+        break
+
+# 자원 해제
+cap.release()
+out.release()
+cv2.destroyAllWindows()
