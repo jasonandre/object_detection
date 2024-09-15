@@ -31,6 +31,7 @@ https://github.com/user-attachments/assets/03949103-bdaa-4206-a60a-e6f783327b4d
 5.프로젝트 회고
 
 1)잘한 점
+
 간단한 코드로 객체인식 성능이 좋은 코드를 구현했습니다.
 
 2)개선 방안
