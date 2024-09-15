@@ -28,7 +28,8 @@ https://github.com/user-attachments/assets/03949103-bdaa-4206-a60a-e6f783327b4d
 
 ![image](https://github.com/user-attachments/assets/6ebd4e69-fd7d-4e95-9e48-111dfcf5bf1c)
 
-5. 프로젝트 회고
+5.프로젝트 회고
+
 1)잘한 점
 간단한 코드로 객체인식 성능이 좋은 코드를 구현했습니다.
 
