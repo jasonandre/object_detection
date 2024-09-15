@@ -1,4 +1,4 @@
-#code2,  
+#code2,  tracker 버전 호환성 문제로 수정한 코드
 
 # casscade classifier를 이용한 객체감지
 import cv2
