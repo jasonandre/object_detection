@@ -26,7 +26,14 @@ python
 
 https://github.com/user-attachments/assets/03949103-bdaa-4206-a60a-e6f783327b4d
 
+good :
+
 ![image](https://github.com/user-attachments/assets/6ebd4e69-fd7d-4e95-9e48-111dfcf5bf1c)
+
+bad:
+
+![image](https://github.com/user-attachments/assets/7efc025e-dd12-4500-a8db-f8bfdd16e520)
+
 
 5.프로젝트 회고
 
