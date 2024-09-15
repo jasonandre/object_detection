@@ -1,0 +1,81 @@
+# casscade classifier를 이용한 객체감지
+import cv2
+from tracker import *
+
+# 패쓰설정
+import os
+os.chdir('C:/Users')
+
+# 파일읽기
+filepath = 'highway.mp4'
+
+# 트래커 생성
+tracker = EuclideanDistTracker()
+
+# 영상 읽기
+cap = cv2.VideoCapture(filepath)
+
+# 영상이 안 열리는 경우 에러메세지
+if not cap.isOpened():
+    print("Video is unavailable :", filepath) 
+    exit(0)
+
+# 객체감지기 생성
+object_detector = cv2.createBackgroundSubtractorMOG2()
+
+# 프레임마다 반복
+while True:
+    ret, frame = cap.read()    
+    
+    if not ret:
+        break
+
+    # frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    roi = frame[60:360,200:450]
+    mask = object_detector.apply(roi)
+    # 마스크에 임계값 적용
+    _, mask = cv2.threshold(mask, 254, 255, cv2.THRESH_BINARY)
+    
+    contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    
+    detections = []
+    for cnt in contours:
+        area = cv2.contourArea(cnt)
+        if area > 300:
+            x, y, w, h = cv2.boundingRect(cnt)
+            # 좌표값 그리기
+            # cv2.drawContours(roi, [cnt], -1, (0, 255, 0),2)
+            detections.append([x,y,w,h])          
+                        
+    boxes_ids = tracker.update(detections)
+    for box_id in boxes_ids:
+        x, y, w, h, id = box_id
+        cv2.putText(roi, str(id), (x,y-15), cv2.FONT_HERSHEY_SIMPLEX, .8, (0,0,255), 2)
+        cv2.rectangle(roi, (x, y, w, h), (0, 0, 255), 2)        
+
+    # bg = object_detector.getBackgroundImage()
+    
+    # # 좌표 가져와서 바운딩 박스 그리기
+    # cnt, _, stats, _ = cv2.connectedComponentsWithStats(mask)
+    
+    # for i in range(1, cnt):
+    #     x, y, w, h, s = stats[i]
+       
+    #     if s < 80:
+    #         continue
+       
+    #     cv2.rectangle(frame, (x, y, w, h), (0, 0, 255), 2)
+       
+       
+        # 시각화
+    cv2.imshow('frame', frame)
+    # cv2.imshow('background', bg)
+    cv2.imshow('mask', mask)
+    cv2.imshow('roi', roi)
+    
+    # 중간에 나가는 키 설정
+    if cv2.waitKey(30) == 27: # ESC
+        break
+
+cap.release()
+cv2.destroyAllWindows()   
