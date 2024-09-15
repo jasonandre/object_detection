@@ -7,3 +7,5 @@ code1 은 tracker를 사용했고, code2 는 버전 호환성문제로 일부 �
 샘플 영상 : 
 
 https://github.com/user-attachments/assets/03949103-bdaa-4206-a60a-e6f783327b4d
+
+![image](https://github.com/user-attachments/assets/6ebd4e69-fd7d-4e95-9e48-111dfcf5bf1c)
