@@ -3,7 +3,7 @@
 
 -casccade classifier 라이브러리를 활용하여 고속도로 차량주행 영상에서 객체감지 프로젝트입니다.
 
--code1 은 tracker를 사용했고, code2 는 버전 호환성문제로 일부 수정한 코드입니다. 
+-code1 은 tracker를 사용했고, code2 는 tracker 버전 호환성문제로 일부 수정한 코드입니다. 
 
 -개인 프로젝트 입니다.
 
